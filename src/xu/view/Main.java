@@ -11,7 +11,7 @@ import xu.library.Judgment;
 import xu.library.WorldRun;
 import xu.model.Creature;
 import xu.model.World;
-import xu.model.base.BNode;
+import xu.model.base.INode;
 import xu.tool.Example;
 import xu.tool.Run;
 

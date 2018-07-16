@@ -1,6 +1,6 @@
 package xu.model;
 
-import xu.model.base.BBehavior;
+import xu.model.base.IBehavior;
 
 /**
  * 自由意志行动类 每个节点都可以自由的对某些自由意志进行加减乘除

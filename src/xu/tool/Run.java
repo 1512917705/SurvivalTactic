@@ -100,7 +100,7 @@ public final class Run {
 		delShowInfo();//清理信息
 		String s;// 输入
 		int round = 0;
-System.out.println(c.getOld());
+		//System.out.println(c.getOld());
 		do {// 一些技能不消耗回合
 			System.out.println("请输入操作:");
 			s = sc.nextLine();

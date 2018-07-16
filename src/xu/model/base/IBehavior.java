@@ -6,12 +6,12 @@ import xu.model.MainPar;
 import xu.model.World;
 
 /**
- * 判定节点接口
+ * 行为节点接口
  * 
  * @author 徐川江
  *
  */
-public interface BJudgment  extends BNode{
+public interface IBehavior  extends INode{
 
-	public  boolean run(World w,Creature c,MainPar mainPar, FreeWill freePar);
+	public boolean run(World w,Creature c,MainPar mainPar, FreeWill freePar);
 }

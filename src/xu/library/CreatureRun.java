@@ -10,7 +10,7 @@ import xu.model.Genome;
 import xu.model.MainPar;
 import xu.model.TreeNode;
 import xu.model.World;
-import xu.model.base.BNode;
+import xu.model.base.INode;
 import xu.tool.Run;
 
 /**
@@ -77,7 +77,7 @@ public final class CreatureRun {
 		 List<TreeNode> nodeList = ge.getTreeNodeList();// 基因层
 		 FreeWill freePar = c.getTree().getFreeWill();
 		for (TreeNode n : nodeList) {// 一个个节点的运行
-			BNode n1 = n.getValue();// 节点
+			INode n1 = n.getValue();// 节点
 			//System.out.println(n1.getClass().getName());
 			//System.out.println(n1.run(w, c, n.getMainPar(), freePar));
 			if (n1.run(w, c, n.getMainPar(), freePar))// 本次节点执行的结果
@@ -85,8 +85,8 @@ public final class CreatureRun {
 				if(n.getFreeWillBehavior()!=null)
 					runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
 			} else {
-				//System.out.println(n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.BBehavior"));
-				if (n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.BBehavior"))// 判定该节点是什么类型节点
+				//System.out.println(n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"));
+				if (n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"))// 判定该节点是什么类型节点
 				{
 					//System.out.println(3);
 					if(n.getFreeWillBehavior()!=null)

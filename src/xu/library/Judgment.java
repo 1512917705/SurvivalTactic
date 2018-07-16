@@ -9,8 +9,8 @@ import xu.model.Creature;
 import xu.model.FreeWill;
 import xu.model.MainPar;
 import xu.model.World;
-import xu.model.base.BJudgment;
-import xu.model.base.BNode;
+import xu.model.base.IJudgment;
+import xu.model.base.INode;
 
 /**
  * 判定库类
@@ -25,7 +25,7 @@ public final class Judgment implements IJudgmentLibrary {
 	/**
 	 * 判定库
 	 */
-	static List<BJudgment> JUDGMENT = new ArrayList<BJudgment>();// 这个list包含所有的判定，每次获取新节点，去里面随机捞一个
+	static List<IJudgment> JUDGMENT = new ArrayList<IJudgment>();// 这个list包含所有的判定，每次获取新节点，去里面随机捞一个
 	static {
 		JUDGMENT.add(FreeWillJud.INSTANCE); // 从单例模式中取节点
 		JUDGMENT.add(FreeWillJud.INSTANCE);
@@ -37,7 +37,7 @@ public final class Judgment implements IJudgmentLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum Test implements BJudgment {// 单例模式放内容
+	public enum Test implements IJudgment {// 单例模式放内容
 		INSTANCE;
 		public static MainPar example;// 数据模板
 
@@ -60,7 +60,7 @@ public final class Judgment implements IJudgmentLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum FreeWillJud implements BJudgment {// 单例模式放内容
+	public enum FreeWillJud implements IJudgment {// 单例模式放内容
 		INSTANCE;
 		public static MainPar example;// 参数案例
 
@@ -88,7 +88,7 @@ public final class Judgment implements IJudgmentLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum diren implements BJudgment {
+	public enum diren implements IJudgment {
 		INSTANCE;
 		public static MainPar example;// 数据模板
 
@@ -122,7 +122,7 @@ public final class Judgment implements IJudgmentLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum lifeBai implements BJudgment {// 单例模式放内容
+	public enum lifeBai implements IJudgment {// 单例模式放内容
 		INSTANCE;
 		public static MainPar example = new MainPar(new int[] { 80 }, new int[] { 1 }, new int[] { 100 },
 				new int[] { 100 });// 数据模板

@@ -11,9 +11,9 @@ import xu.model.Creature;
 import xu.model.FreeWill;
 import xu.model.MainPar;
 import xu.model.World;
-import xu.model.base.BBehavior;
-import xu.model.base.BJudgment;
-import xu.model.base.BNode;
+import xu.model.base.IBehavior;
+import xu.model.base.IJudgment;
+import xu.model.base.INode;
 
 /**
  * 行为库类 存放所有的ai行为
@@ -26,7 +26,7 @@ public final class Behavior implements IBehaviorLibrary {
 	/**
 	 * 行为库
 	 */
-	static List<BBehavior> BEHAVIOR = new ArrayList<BBehavior>();// 这个list包含所有的判定，每次获取新节点，去里面随机捞一个
+	static List<IBehavior> BEHAVIOR = new ArrayList<IBehavior>();// 这个list包含所有的判定，每次获取新节点，去里面随机捞一个
 	static {
 		BEHAVIOR.add(Test.INSTANCE);// 从单例模式中取节点
 		BEHAVIOR.add(Move.INSTANCE); // 问题是参数还是要自己去根据模板来初始化
@@ -39,7 +39,7 @@ public final class Behavior implements IBehaviorLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum Test implements BBehavior {// 单例模式放内容
+	public enum Test implements IBehavior {// 单例模式放内容
 		INSTANCE;
 		public static MainPar example;
 
@@ -54,7 +54,7 @@ public final class Behavior implements IBehaviorLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum Move implements BBehavior {// 单例模式放内容
+	public enum Move implements IBehavior {// 单例模式放内容
 		INSTANCE;
 		public static MainPar example = new MainPar(new int[] { 1 }, new int[] { 9 }, new int[] { 1 },
 				new int[] { 100 });
@@ -75,7 +75,7 @@ public final class Behavior implements IBehaviorLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum randomMove implements BBehavior {// 单例模式放内容
+	public enum randomMove implements IBehavior {// 单例模式放内容
 		INSTANCE;
 		public static MainPar example;
 
@@ -93,7 +93,7 @@ public final class Behavior implements IBehaviorLibrary {
 	 * @author 徐川江
 	 *
 	 */
-	public enum multiplication implements BBehavior {
+	public enum multiplication implements IBehavior {
 		INSTANCE;
 		public static MainPar example = new MainPar(new int[] { 1 }, new int[] { 9 }, new int[] { 1 },
 				new int[] { 100 });

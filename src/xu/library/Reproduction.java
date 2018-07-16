@@ -6,9 +6,9 @@ import xu.model.FreeWill;
 import xu.model.FreeWillBehavior;
 import xu.model.MainPar;
 import xu.model.TreeNode;
-import xu.model.base.BJudgment;
+import xu.model.base.IJudgment;
 import xu.model.base.BMainPar;
-import xu.model.base.BNode;
+import xu.model.base.INode;
 
 /**
  * 繁殖类
@@ -16,7 +16,7 @@ import xu.model.base.BNode;
  * @author 徐川江
  *
  */
-public final class Sex {
+public final class Reproduction {
 	static Random random = new Random();
 	
 	/**

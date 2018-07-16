@@ -1,6 +1,6 @@
 package xu.model;
 
-import xu.model.base.BNode;
+import xu.model.base.INode;
 
 /**
  * 节点类 
@@ -16,7 +16,7 @@ public class TreeNode  {
 	//public TreeNode left;
 
 	// 节点
-	public BNode value;
+	public INode value;
 	
 	private MainPar mainPar;//主参数类，
 	
@@ -30,7 +30,7 @@ public class TreeNode  {
 	 * @param mainPar 参数，建议参考参数模板
 	 * @param freeWillBehavior 自由意志行为
 	 */
-	public TreeNode( BNode value, MainPar mainPar, FreeWillBehavior freeWillBehavior) {
+	public TreeNode( INode value, MainPar mainPar, FreeWillBehavior freeWillBehavior) {
 		//this.left = left;
 		this.value = value;
 		this.mainPar = mainPar;
@@ -47,11 +47,11 @@ public class TreeNode  {
 	}
 
 
-	public BNode getValue() {
+	public INode getValue() {
 		return value;
 	}
 
-	public void setValue(BNode value) {
+	public void setValue(INode value) {
 		this.value = value;
 	}
 
