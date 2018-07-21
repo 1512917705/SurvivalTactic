@@ -1,5 +1,7 @@
 package xu.model;
 
+import java.io.Serializable;
+
 import xu.model.base.INode;
 
 /**
@@ -10,7 +12,12 @@ import xu.model.base.INode;
  * @author 徐川江
  *
  */
-public class TreeNode  {
+public class TreeNode   implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6638939672515699977L;
 
 	// 节点
 	//public TreeNode left;

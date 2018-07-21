@@ -1,5 +1,10 @@
 package xu.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -8,8 +13,16 @@ import java.util.Random;
  * @author 徐川江
  *
  */
-public class Creature {
+public class Creature  implements Cloneable,Serializable  { 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2366273962292007692L;
+	/*
+给每个生物安排一个随机生成的32位ID，让生物可以永久记住其他生物，可以做到复仇，或者效忠，或者报恩。
+给每个生物安排一个根据行为树而计算的32位数，来确定基因相似程度，基因相似的就是友军
 
+ */
 	// 一阶段必须属性
 	private boolean live;// 是否活着
 	private int vision;// 视野，正方形，目前是10
@@ -32,14 +45,15 @@ public class Creature {
 	// private ICreature nextOne;// 链表，后一个生物
 
 	// 二阶段
-	private int variation;// 变异值 每次变异有
+	private int variation;// 变异值
 	private int breeding;// 繁殖回合，和体型相关，
 	private int breednum;// 繁殖数量，2-8，饥饿消耗2次方递增，饥饿用完就耗血。
 	private int rangking;// 辈分，这个生物是第几代
+	
 	/*
 	 * 每回合都会扣饱腹值，饱腹值扣完，就扣血量。杀死敌人回复饱腹值。饱腹值为正则缓慢回血。 饱腹值上限和体型相关，和技能相关。
 	 */
-	private double hunger;// 饥饿
+	private double hunger;// 饥饿，和节点总数，和基因层数相关
 	private int[] name;// 名字，待定
 
 	// 属性值，互相牵制，增加一个属性，会少许降低另一个属性。
@@ -52,6 +66,8 @@ public class Creature {
 	private double wil;// 意志 降敏捷 降体质
 	private double per;// 感知 降力量 降体质
 	private int body;// 体型1~10,特殊属性，影响明显,测试区没有上限，但是对速度还是有影响
+
+
 
 	/**
 	 * 生物类 构造函数

@@ -19,6 +19,9 @@ public class World {
 如果此回合选择移动，那么行动时候，减去的行动点数，是移动速度。
 如果此回合选择施法，那么行动时候，减去的行动点数，是施法速度
 未完成
+
+天启，生物的某个基因组被我们写好的基因组替换
+未完成
 */
 	List<Creature> creList = new ArrayList<Creature>();//所有可运行的生物
 	private Creature[][] creatureMap ;//世界就是一个x*y大小的存放生物的网格

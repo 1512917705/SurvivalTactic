@@ -1,5 +1,6 @@
 package xu.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,14 @@ import java.util.List;
  * @author 徐川江
  *
  */
-public class BehaviorTree {
+public class BehaviorTree implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1127675928663030952L;
+
+
+
 	/**
 	 * 行为树类 构造函数
 	 * 

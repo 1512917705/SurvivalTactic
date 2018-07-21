@@ -19,7 +19,7 @@ import xu.view.View;
 public final class Run {
 
 	private static String showInfo = " ";//上回合所有信息，在回合开始时候展示
-
+	private static int gameType = 1;//1正常模式 2自动运行模式 
 	/**
 	 * 字符串是否是整数
 	 * 
@@ -143,7 +143,8 @@ public final class Run {
 	}
 
 	public static void addShowInfo(String show) {
-		showInfo = showInfo + " \n " + show;
+		if(gameType==1)//正常模式才可以显示
+			showInfo = showInfo + " \n " + show;
 	}
 
 	public static void delShowInfo( ) {

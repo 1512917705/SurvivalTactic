@@ -1,5 +1,6 @@
 package xu.library;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +22,11 @@ import xu.model.base.INode;
  * @author 徐川江
  *
  */
-public final class Behavior implements IBehaviorLibrary {
+public final class Behavior implements IBehaviorLibrary, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6495142983255608790L;
 	static Random random = new Random();
 	/**
 	 * 行为库
@@ -63,10 +68,8 @@ public final class Behavior implements IBehaviorLibrary {
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 			int move = mainPar.getMainpar()[0];
 			Skill.move(w, c, move);
-
 			return false;
 		}
-
 	}
 
 	/**
@@ -88,6 +91,23 @@ public final class Behavior implements IBehaviorLibrary {
 	}
 
 	/**
+	 * 狂暴行为
+	 * 
+	 * @author 徐川江
+	 *
+	 */
+	public enum kuangbao implements IBehavior {// 单例模式放内容
+		INSTANCE;
+		public static MainPar example;
+
+		@Override
+		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
+
+			return false;
+		}
+	}
+
+	/**
 	 * 繁殖行为节点
 	 * 
 	 * @author 徐川江
@@ -101,17 +121,34 @@ public final class Behavior implements IBehaviorLibrary {
 		@Override
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 			/*
-			 * 每个生物每次繁殖，生下四个后代，（未来可能改）
-			 * 在0~4中产生一个随机数，决定有几个后代变异，
-			 * 每个生物在0-var中，产生一个随机数，决定几个节点变异
+			 * //天启类型变异（未完成） //增和删的概率必须一致，它们必须在一个地方进行判定
+			 *
+			 * 后代变异数量 在0~4中产生一个随机数，决定有几个后代变异，
 			 * 
-			 * 每个节点变异操作如下
-			 * 在0~基因组个数中，产生一个随机数，决定是哪个基因组变异，为0则是天启类型变异，
-			 * 在0~在该基因组内节点最大数中+x+x+y，产生一个随机数，决定哪个节点产生变异，为n~n+x则是节点增加（包含自由意志判定），为n+x~n+2x则是节点删除,为n+2x~n+2x+y则是自由意志值变异,
-			 * 在0~9中产生一个随机数，0~3则值变异，4~6则是自由意志行为变异，7~8则是节点改
+			 * 自由意志参数变异 每个生物在0-n之间，产生一个随机数，决定自由意志参数是否变异，何种变异。
+			 * 
+			 * 基因组变异操作如下 在0~基因组个数中，产生一个随机数，决定是哪个基因组是否变异，变异类型，（新增基因组，只增加一个行为节点，删除基因层）
+			 * 
+			 * 节点变异
+			 * 在0~在该基因组内节点最大数中+x+x+y，产生一个随机数，决定哪个节点产生变异，为n~n+x则是节点增加（包含自由意志判定），
+			 * 
+			 * 节点内变异 在0~9中产生一个随机数，0~3则值变异，4~6则是自由意志行为变异，7~8则是节点改
 			 * 
 			 * （有性繁殖待定）
 			 */
+			int NumberOfMutantOrganisms = Reproduction.NumberOfMutantOrganisms(c);// 后代变异数量
+
+			for (int x = 0, n = 0; x < c.getBreednum(); x++) {
+				if(n<NumberOfMutantOrganisms){//开始变异
+					int NumberOfVariantNodes = Reproduction.NumberOfVariantNodes(c);// 有几个次变异
+					
+					Reproduction.starVar(c);//开始变异
+					
+					n++;
+				}
+			}
+
+
 			return false;
 		}
 

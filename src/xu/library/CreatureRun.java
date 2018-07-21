@@ -24,19 +24,40 @@ public final class CreatureRun {
 	/**
 	 * 受伤函数
 	 * 
-	 * @param atkCre 攻击生物
-	 * @param inj 受伤生物
-	 * @param w 世界
+	 * @param atkCre
+	 *            攻击生物
+	 * @param inj
+	 *            受伤生物
+	 * @param w
+	 *            世界
 	 */
-	public static void injure(Creature atkCre, Creature inj, World w,int atk) {
+	public static void injure(Creature atkCre, Creature inj, World w, int atk) {
 
 		double l = inj.getLife() - atk;
-		Run.addShowInfo( "Z被攻击，损失" + atk + "点生命值" );
+		Run.addShowInfo("Z被攻击，损失" + atk + "点生命值");
 		if (l >= 0) {
 			inj.setLife(l);
 		} else {
 			// 杀完对方，回饥饿
-			atkCre.setLife(inj.getLife());
+			atkCre.setHungerLife(inj.getHungerLife());
+
+			// 改成，死亡敌人半径两码所有生物回复饥饿
+			int x = inj.getX();
+			int y = inj.getY();
+			for (int i = 1; i < 4; i++)//
+			{
+				for (int j = 1; j < 4; j++)// 生物
+				{
+					Creature[][] sw = w.getCreatureMap();
+					if ((j + x - 4) < 0 || (-i + y + 4) < 0) {
+						continue;
+					}
+					if (sw[j + x - 4][-i + y + 4] != null) {
+						sw[x][y].setHungerLife(sw[x][y].getHungerLife() + inj.getHungerLife());
+					}
+				}
+			}
+
 			WorldRun.died(w, inj);
 
 			if ((atkCre.getHungerLife() + inj.getLife()) > atkCre.getHungerLifeMax())
@@ -53,8 +74,8 @@ public final class CreatureRun {
 	 * @param w
 	 * @param c
 	 */
-	public static void TreeRun(World w, Creature c) {// 
-		List<Genome>  tree = c.getTree().getGenomeList();// 行为树
+	public static void TreeRun(World w, Creature c) {//
+		List<Genome> tree = c.getTree().getGenomeList();// 行为树
 
 		for (Genome g : tree) {// 一层层的运行
 			int n = GenomeRun(w, c, g);
@@ -73,23 +94,23 @@ public final class CreatureRun {
 	 * @param ge
 	 * @return
 	 */
-	public static int GenomeRun(World w, Creature c , Genome ge) {// 基因层运行
-		 List<TreeNode> nodeList = ge.getTreeNodeList();// 基因层
-		 FreeWill freePar = c.getTree().getFreeWill();
+	public static int GenomeRun(World w, Creature c, Genome ge) {// 基因层运行
+		List<TreeNode> nodeList = ge.getTreeNodeList();// 基因层
+		FreeWill freePar = c.getTree().getFreeWill();
 		for (TreeNode n : nodeList) {// 一个个节点的运行
 			INode n1 = n.getValue();// 节点
-			//System.out.println(n1.getClass().getName());
-			//System.out.println(n1.run(w, c, n.getMainPar(), freePar));
+			// System.out.println(n1.getClass().getName());
+			// System.out.println(n1.run(w, c, n.getMainPar(), freePar));
 			if (n1.run(w, c, n.getMainPar(), freePar))// 本次节点执行的结果
 			{
-				if(n.getFreeWillBehavior()!=null)
+				if (n.getFreeWillBehavior() != null)
 					runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
 			} else {
-				//System.out.println(n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"));
+				// System.out.println(n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"));
 				if (n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"))// 判定该节点是什么类型节点
 				{
-					//System.out.println(3);
-					if(n.getFreeWillBehavior()!=null)
+					// System.out.println(3);
+					if (n.getFreeWillBehavior() != null)
 						runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
 					return 1;// 执行行为节点
 				}

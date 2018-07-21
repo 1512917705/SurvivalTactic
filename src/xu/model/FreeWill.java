@@ -1,5 +1,6 @@
 package xu.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,11 @@ import xu.model.base.BFreeWill;
  * @author 徐川江
  *
  */
-public class FreeWill extends BFreeWill {
+public class FreeWill extends BFreeWill  implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8648353559301026942L;
 	/**
 	 *自由意志参数 
 	 */

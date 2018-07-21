@@ -1,5 +1,6 @@
 package xu.library;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,15 +14,17 @@ import xu.model.base.IJudgment;
 import xu.model.base.INode;
 
 /**
- * 判定库类
- * 存放所有的ai判定
+ * 判定库类 存放所有的ai判定
  * 
  * @author 徐川江
  *
  */
-public final class Judgment implements IJudgmentLibrary {
+public final class Judgment implements IJudgmentLibrary , Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4069389911923399453L;
 	static Random random = new Random();
-
 	/**
 	 * 判定库
 	 */
@@ -31,9 +34,32 @@ public final class Judgment implements IJudgmentLibrary {
 		JUDGMENT.add(FreeWillJud.INSTANCE);
 		JUDGMENT.add(lifeBai.INSTANCE);
 	}
+	/*
+	 * 所有的判定
+	 * 采取坐标锁定的方式,但是可以适当增加其他类型锁定判定
+	 * 
+每个生物，有一个主锁定参数，为攻击法术和敌人判定，提供敌人坐标，
+有视野*视野的生物记忆空间，可以记住视野内所有敌人的位置，
+有x个永久记忆坐标，我也不知道有啥用，可能每个种族的生物可以记住它的出生地，每个种族会有势力范围
+	 * 
+	 * 敌人判定
+	 * 视野内是否有敌人
+	 * 
+	 * 血量判定，饱腹值判定
+	 * 自身血量是否高于n%
+	 * 自身血量是否高于n
+	 * 自身饱腹值是否大于n%
+	 * 自身饱腹值是否大于n
+	 * xy坐标敌人的血量是否高于n%
+	 * xy坐标敌人的血量是否高于n
+	 * xy坐标敌人的饱腹值是否高于n%
+	 * xy坐标敌人的饱腹值是否高于n
+	 * 
+	 */
 
 	/**
 	 * 测试判定节点
+	 * 
 	 * @author 徐川江
 	 *
 	 */
@@ -108,7 +134,7 @@ public final class Judgment implements IJudgmentLibrary {
 					}
 
 					if (sw[j + x - v][-i + y + v] != null && sw[j + x - v][-i + y + v] != c) {
-							return true;
+						return true;
 					}
 				}
 			}
@@ -127,8 +153,8 @@ public final class Judgment implements IJudgmentLibrary {
 		public static MainPar example = new MainPar(new int[] { 80 }, new int[] { 1 }, new int[] { 100 },
 				new int[] { 100 });// 数据模板
 
-		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) { 
-			return c.getLife() >= (mainPar.getMainpar()[0]*c.getLifeMax()/100);
+		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
+			return c.getLife() >= (mainPar.getMainpar()[0] * c.getLifeMax() / 100);
 		}
 	}
 

@@ -1,13 +1,19 @@
 package xu.model;
 
+import java.io.Serializable;
+
 import xu.model.base.BMainPar;
 /**
  * 主参数类
  * @author 徐川江
  *
  */
-public class MainPar extends BMainPar {
+public class MainPar extends BMainPar  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8766838689575616563L;
 	private int[] mainpar;//主参数
 	private int[] max;
 	private int[] min;

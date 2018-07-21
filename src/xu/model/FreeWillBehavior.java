@@ -1,5 +1,7 @@
 package xu.model;
 
+import java.io.Serializable;
+
 import xu.model.base.IBehavior;
 
 /**
@@ -8,8 +10,12 @@ import xu.model.base.IBehavior;
  * @author 徐川江
  *
  */
-public class FreeWillBehavior {
+public class FreeWillBehavior  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8521344157476705815L;
 	private int iMax = 10;// a[i]中i的最大值，也就是每个节点里面运算参数的最大值
 	// 格式是，a=b加减乘除d
 	private int[] a = { 0 };// 每个a[i]存储的int值是第i个自由意志参数
