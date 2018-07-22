@@ -8,6 +8,7 @@ import java.util.Random;
 import xu.library.Judgment.FreeWillJud;
 import xu.library.Judgment.Test;
 import xu.library.inf.IBehaviorLibrary;
+import xu.model.BehaviorTree;
 import xu.model.Creature;
 import xu.model.FreeWill;
 import xu.model.MainPar;
@@ -35,7 +36,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	static {
 		BEHAVIOR.add(Test.INSTANCE);// 从单例模式中取节点
 		BEHAVIOR.add(Move.INSTANCE); // 问题是参数还是要自己去根据模板来初始化
-		BEHAVIOR.add(randomMove.INSTANCE);
+		BEHAVIOR.add(multiplication.INSTANCE);// 繁殖
+		BEHAVIOR.add(randomMove.INSTANCE);// 随意移动
 	}
 
 	/**
@@ -127,7 +129,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			 * 
 			 * 自由意志参数变异 每个生物在0-n之间，产生一个随机数，决定自由意志参数是否变异，何种变异。
 			 * 
-			 * 基因组变异操作如下 在0~基因组个数中，产生一个随机数，决定是哪个基因组是否变异，变异类型，（新增基因组，只增加一个行为节点，删除基因层）
+			 * 基因组变异操作如下
+			 * 在0~基因组个数中，产生一个随机数，决定是哪个基因组是否变异，变异类型，（新增基因组，只增加一个行为节点，删除基因层）
 			 * 
 			 * 节点变异
 			 * 在0~在该基因组内节点最大数中+x+x+y，产生一个随机数，决定哪个节点产生变异，为n~n+x则是节点增加（包含自由意志判定），
@@ -136,18 +139,34 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			 * 
 			 * （有性繁殖待定）
 			 */
-			int NumberOfMutantOrganisms = Reproduction.NumberOfMutantOrganisms(c);// 后代变异数量
-
+			// int NumberOfMutantOrganisms =
+			// Reproduction.NumberOfMutantOrganisms(c);// 后代变异数量
+			int NumberOfMutantOrganisms = 0;// 测试
+			System.out.println("繁殖");
 			for (int x = 0, n = 0; x < c.getBreednum(); x++) {
-				if(n<NumberOfMutantOrganisms){//开始变异
-					int NumberOfVariantNodes = Reproduction.NumberOfVariantNodes(c);// 有几个次变异
-					
-					Reproduction.starVar(c);//开始变异
-					
+				// 关于繁殖时候的消耗，和孩子数量，是个问题
+				if ((c.getHungerLife() - c.getHungerLifeMax() * 0.5) < 0)// 饥饿不够
+					return false;
+				if ((c.getLife() - c.getLifeMax() * 0.5) < 0)// 生命不够
+					return false;
+				c.setLife(c.getLife() - c.getLifeMax() * 0.5);
+				c.setHungerLifeMax(c.getHungerLife() - c.getHungerLifeMax() * 0.5);
+
+				BehaviorTree bt = Reproduction.clone(c.getTree());
+				//bt.getGenomeList().clear();
+				Creature son = new Creature(c.getBody(), c.getVariation(), c.getX(), c.getY(), bt);
+				if (n < NumberOfMutantOrganisms) {// 开始变异
+					// int NumberOfVariantNodes =
+					// Reproduction.NumberOfVariantNodes(son);// 有几个次变异
+
+					// Reproduction.starVar(son);//开始变异
+
 					n++;
 				}
-			}
 
+				Reproduction.location(w, c, son);
+
+			}
 
 			return false;
 		}

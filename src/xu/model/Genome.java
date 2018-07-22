@@ -5,24 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 基因组类 
- * 存放一串基因组。
+ * 基因组类 存放一串基因组。
  * 
  * @author 徐川江
  *
  */
-public class Genome implements Serializable{
+public class Genome implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6468073137904700540L;
 
 	/**
-	 * 基因组 构造函数
-	 * 里面放一串节点，注意前面的节点是判定，而尾节点是一个行为
+	 * 基因组 构造函数 里面放一串节点，注意前面的节点是判定，而尾节点是一个行为
+	 * 
 	 * @param treeNodeList
 	 */
-	public Genome(List<TreeNode> treeNodeList){
+	public Genome(List<TreeNode> treeNodeList) {
 		this.treeNodeList = treeNodeList;
 	}
 

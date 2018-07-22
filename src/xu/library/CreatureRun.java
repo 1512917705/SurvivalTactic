@@ -34,6 +34,7 @@ public final class CreatureRun {
 	public static void injure(Creature atkCre, Creature inj, World w, int atk) {
 
 		double l = inj.getLife() - atk;
+		System.out.println(l);
 		Run.addShowInfo("Z被攻击，损失" + atk + "点生命值");
 		if (l >= 0) {
 			inj.setLife(l);
@@ -48,12 +49,14 @@ public final class CreatureRun {
 			{
 				for (int j = 1; j < 4; j++)// 生物
 				{
+					System.out.println(j + x - 4);
+					System.out.println(-i + y + 4);
 					Creature[][] sw = w.getCreatureMap();
 					if ((j + x - 4) < 0 || (-i + y + 4) < 0) {
 						continue;
 					}
 					if (sw[j + x - 4][-i + y + 4] != null) {
-						sw[x][y].setHungerLife(sw[x][y].getHungerLife() + inj.getHungerLife());
+						sw[j + x - 4][-i + y + 4].setHungerLife(sw[j + x - 4][-i + y + 4].getHungerLife() + inj.getHungerLife());
 					}
 				}
 			}

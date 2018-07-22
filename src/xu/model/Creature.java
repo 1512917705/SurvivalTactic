@@ -13,16 +13,16 @@ import java.util.Random;
  * @author 徐川江
  *
  */
-public class Creature  implements Cloneable,Serializable  { 
+public class Creature implements Cloneable, Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2366273962292007692L;
 	/*
-给每个生物安排一个随机生成的32位ID，让生物可以永久记住其他生物，可以做到复仇，或者效忠，或者报恩。
-给每个生物安排一个根据行为树而计算的32位数，来确定基因相似程度，基因相似的就是友军
-
- */
+	 * 给每个生物安排一个随机生成的32位ID，让生物可以永久记住其他生物，可以做到复仇，或者效忠，或者报恩。
+	 * 给每个生物安排一个根据行为树而计算的32位数，来确定基因相似程度，基因相似的就是友军
+	 * 
+	 */
 	// 一阶段必须属性
 	private boolean live;// 是否活着
 	private int vision;// 视野，正方形，目前是10
@@ -47,9 +47,9 @@ public class Creature  implements Cloneable,Serializable  {
 	// 二阶段
 	private int variation;// 变异值
 	private int breeding;// 繁殖回合，和体型相关，
-	private int breednum;// 繁殖数量，2-8，饥饿消耗2次方递增，饥饿用完就耗血。
+	private int breednum = 4;// 繁殖数量，2-8，饥饿消耗2次方递增，饥饿用完就耗血。
 	private int rangking;// 辈分，这个生物是第几代
-	
+
 	/*
 	 * 每回合都会扣饱腹值，饱腹值扣完，就扣血量。杀死敌人回复饱腹值。饱腹值为正则缓慢回血。 饱腹值上限和体型相关，和技能相关。
 	 */
@@ -67,11 +67,9 @@ public class Creature  implements Cloneable,Serializable  {
 	private double per;// 感知 降力量 降体质
 	private int body;// 体型1~10,特殊属性，影响明显,测试区没有上限，但是对速度还是有影响
 
-
-
 	/**
-	 * 生物类 构造函数
-	 * 无行为树，不建议使用，仅玩家使用
+	 * 生物类 构造函数 无行为树，不建议使用，仅玩家使用
+	 * 
 	 * @param body
 	 * @param x
 	 * @param y
@@ -80,13 +78,13 @@ public class Creature  implements Cloneable,Serializable  {
 		live = true;
 		vision = 10;
 		old = 0;
-		this.body = body ;
-		lifeMax = 70 + body * 10;// 170-80 血量    10体型砍1体型需要1刀，砍2体型需要2刀
+		this.body = body;
+		lifeMax = 70 + body * 10;// 170-80 血量 10体型砍1体型需要1刀，砍2体型需要2刀
 		life = lifeMax;
 		attack = 10 + body * 3;// 40-13攻击力
 		hungerLifeMax = life;
 		hungerLife = life;
-		speed = 160 - body * 12;//40-148速度
+		speed = 160 - body * 12;// 40-148速度
 		this.x = x;
 		this.y = y;
 	}
@@ -94,11 +92,14 @@ public class Creature  implements Cloneable,Serializable  {
 	/**
 	 * 生物类 构造函数
 	 * 
-	 * @param body 体型
-	 * @param variation 变异概率
-	 * @param x 
+	 * @param body
+	 *            体型
+	 * @param variation
+	 *            变异概率
+	 * @param x
 	 * @param y
-	 * @param t 行为树
+	 * @param t
+	 *            行为树
 	 */
 	public Creature(int body, int variation, int x, int y, BehaviorTree t) {
 		live = true;
@@ -113,12 +114,12 @@ public class Creature  implements Cloneable,Serializable  {
 
 		this.tree = t;
 		this.variation = variation;
-		breeding = 90 * body;// 90回合繁殖后代
+		breeding = 90 * body;// 90回合繁殖后代,可以强制繁殖，但是代价加大
 		hunger = 0.1 * body + tree.getMaxNum() / 10000;// 0节点时候，100回合饿死
-		vision = 12 - body/2;
+		vision = 12 - body / 2;
 
 		old = 1;
-		this.variation =variation;
+		this.variation = variation;
 
 		this.x = x;
 		this.y = y;
