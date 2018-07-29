@@ -10,6 +10,7 @@ import xu.model.Creature;
 import xu.model.FreeWill;
 import xu.model.MainPar;
 import xu.model.World;
+import xu.model.base.IBehavior;
 import xu.model.base.IJudgment;
 import xu.model.base.INode;
 
@@ -58,6 +59,14 @@ public final class Judgment implements IJudgmentLibrary , Serializable{
 	 */
 
 	/**
+	 * 获取任意行为节点
+	 * @return
+	 */
+	public static IJudgment getRandomNode(){
+		return JUDGMENT.get(
+				random.nextInt(JUDGMENT.size()));
+	}
+	/**
 	 * 测试判定节点
 	 * 
 	 * @author 徐川江
@@ -70,6 +79,11 @@ public final class Judgment implements IJudgmentLibrary , Serializable{
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 			return false;
 		}
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
+		}
+
 	}
 	/*
 	 * public static class Test extends BJudgment { public static MainPar
@@ -91,9 +105,9 @@ public final class Judgment implements IJudgmentLibrary , Serializable{
 		public static MainPar example;// 参数案例
 
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
-			int a = freePar.getFreeWill()[mainPar.getMainpar()[0]];// 第一个参数
-			int x = freePar.getFreeWill()[mainPar.getMainpar()[1]];// >或=或>=的标志
-			int b = freePar.getFreeWill()[mainPar.getMainpar()[2]];// 第二个参数
+			int a = freePar.getFreeWill().get(mainPar.getMainpar()[0]);// 第一个参数
+			int x = freePar.getFreeWill().get(mainPar.getMainpar()[1]);// >或=或>=的标志
+			int b = freePar.getFreeWill().get(mainPar.getMainpar()[2]);// 第二个参数
 
 			switch (x) {
 			case 0:
@@ -105,6 +119,10 @@ public final class Judgment implements IJudgmentLibrary , Serializable{
 			default:
 				return false;
 			}
+		}
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
 		}
 	}
 
@@ -140,6 +158,10 @@ public final class Judgment implements IJudgmentLibrary , Serializable{
 			}
 			return false;
 		}
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
+		}
 	}
 
 	/**
@@ -155,6 +177,10 @@ public final class Judgment implements IJudgmentLibrary , Serializable{
 
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 			return c.getLife() >= (mainPar.getMainpar()[0] * c.getLifeMax() / 100);
+		}
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
 		}
 	}
 

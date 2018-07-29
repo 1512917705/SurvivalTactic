@@ -21,19 +21,15 @@ public class BehaviorTree implements Serializable {
 	 * 
 	 * @param genomeList
 	 *            基因组
-	 * @param MaxNum
-	 *            基因组数量
 	 * @param freeWill
 	 *            自由意志
 	 */
-	public BehaviorTree(List<Genome> genomeList, int MaxNum, FreeWill freeWill) {
+	public BehaviorTree(List<Genome> genomeList, FreeWill freeWill) {
 		this.genomeList = genomeList;
-		this.MaxNum = MaxNum;
 		this.freeWill = freeWill;
 	}
 
 	private List<Genome> genomeList = new ArrayList<Genome>();
-	private int MaxNum;
 	private FreeWill freeWill;// 自由意志参数类
 
 	public List<Genome> getGenomeList() {
@@ -42,15 +38,7 @@ public class BehaviorTree implements Serializable {
 
 	public void setGenomeList(List<Genome> genomeList) {
 		this.genomeList = genomeList;
-	}
-
-	public int getMaxNum() {
-		return MaxNum;
-	}
-
-	public void setMaxNum(int maxNum) {
-		MaxNum = maxNum;
-	}
+	} 
 
 	public FreeWill getFreeWill() {
 		return freeWill;

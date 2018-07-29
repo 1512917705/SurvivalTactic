@@ -1,6 +1,7 @@
 package xu.library;
 
 import java.util.List;
+import java.util.Map;
 
 import xu.model.BehaviorTree;
 import xu.model.Creature;
@@ -56,7 +57,8 @@ public final class CreatureRun {
 						continue;
 					}
 					if (sw[j + x - 4][-i + y + 4] != null) {
-						sw[j + x - 4][-i + y + 4].setHungerLife(sw[j + x - 4][-i + y + 4].getHungerLife() + inj.getHungerLife());
+						sw[j + x - 4][-i + y + 4]
+								.setHungerLife(sw[j + x - 4][-i + y + 4].getHungerLife() + inj.getHungerLife());
 					}
 				}
 			}
@@ -132,7 +134,7 @@ public final class CreatureRun {
 	 * @param fwb
 	 */
 	public static void runFreeWillBehavior(FreeWill fw, FreeWillBehavior fwb) {
-		int[] free = fw.getFreeWill();// 所有的自由意志参数
+		List<Integer> free = fw.getFreeWill();// 所有的自由意志参数
 		int[] a = fwb.getA();
 		int[] b = fwb.getB();
 		int[] c = fwb.getC();
@@ -141,19 +143,55 @@ public final class CreatureRun {
 		for (int z = 0; z < a.length; z++) {
 			switch (c[z]) {
 			case 0:
-				free[a[z]] = free[b[z]] + free[d[z]];
+				free.set(a[z], free.get(b[z]) + free.get(d[z]));
 				break;
 			case 1:
-				free[a[z]] = free[b[z]] - free[d[z]];
+				free.set(a[z], free.get(b[z]) - free.get(d[z]));
 				break;
 			case 2:
-				free[a[z]] = free[b[z]] * free[d[z]];
+				free.set(a[z], free.get(b[z]) * free.get(d[z]));
 				break;
 			case 3:
-				free[a[z]] = free[b[z]] / free[d[z]];
+				free.set(a[z], free.get(b[z]) / free.get(d[z]));
 				break;
 			}
 		}
+	}
+
+	/**
+	 * 返回生物的节点数量
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public static int NodeNum(Creature c) {
+		int num = 0;
+		for (Genome g : c.getTree().getGenomeList()) {
+
+			for (TreeNode tn : g.getTreeNodeList()) {
+				num++;
+				System.out.print(tn.getValue().getClass().getName() + "    ");
+			}
+
+		}
+		System.out.println();
+		return num;
+	}
+
+	/**
+	 * 返回生物的节点数量
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public static int FreewillNum(Creature c) {
+		int num = 0;
+		for (Integer i : c.getTree().getFreeWill().getFreeWill()) {
+			num++;
+			System.out.print(i + "    ");
+		}
+		System.out.println();
+		return num;
 	}
 
 }

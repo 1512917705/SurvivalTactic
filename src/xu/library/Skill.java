@@ -93,6 +93,9 @@ public final class Skill implements IJudgmentLibrary {
 			System.out.println("生命值" + sw.getLife() + "/" + sw.getLifeMax());
 			System.out.println("体型" + sw.getBody());
 			System.out.println("攻击力" + sw.getAttack());
+			System.out.println("基因组" + sw.getTree().getGenomeList().size());
+			System.out.println("节点" + CreatureRun.NodeNum(sw));
+			System.out.println("自由意志"+CreatureRun.FreewillNum(sw));
 		}
 
 		return 0;

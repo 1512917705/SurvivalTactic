@@ -54,7 +54,7 @@ public class Example {
 		tt2.add(treeNode2);
 		
 
-		FreeWill freeWill = new FreeWill(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, null);
+		FreeWill freeWill = new FreeWill(null, null);
 
 		Genome g1 = new Genome(tt1);
 		Genome g2 = new Genome(tt2);
@@ -62,9 +62,8 @@ public class Example {
 		List<Genome> genomeList = new ArrayList<Genome>();
 		genomeList.add(g1);
 		genomeList.add(g2);
-		int MaxNum = 1;
 
-		BehaviorTree t1 = new BehaviorTree(genomeList, MaxNum, freeWill);
+		BehaviorTree t1 = new BehaviorTree(genomeList , freeWill);
 		Creature c1 = new Creature(5, 0, 8, 8, t1);
 
 		return c1;

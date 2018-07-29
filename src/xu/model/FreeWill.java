@@ -1,49 +1,49 @@
 package xu.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import xu.model.base.BFreeWill;
+
 /**
- * 自由意志类
- * 每个生物只有一个
+ * 自由意志类 每个生物只有一个
  * 
  * @author 徐川江
  *
  */
-public class FreeWill extends BFreeWill  implements Serializable{
+public class FreeWill extends BFreeWill implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8648353559301026942L;
 	/**
-	 *自由意志参数 
+	 * 自由意志参数
 	 */
-	private int[] freeWill;//主参数 
+	private List<Integer> freeWill = new ArrayList<Integer>();// 主参数
 	/**
-	 * 记忆参数
-	 * 所有判定和行为节点所存放的数据都在这里
+	 * 记忆参数 所有判定和行为节点所存放的数据都在这里
 	 */
 	private Map<String, Integer> memory = new HashMap<String, Integer>();
 
 	/**
 	 * 自由意志类构造函数
+	 * 
 	 * @param freeWill
 	 * @param memory
 	 */
-	public FreeWill(int[] freeWill ,Map<String, Integer> memory){
-		this.freeWill = freeWill;
-		this.memory = memory;
-	}
-	
-
-	public int[] getFreeWill() {
-		return freeWill;
-	}
-
-	public void setFreeWill(int[] freeWill) {
-		this.freeWill = freeWill;
+	public FreeWill( List<Integer>  freeWill, Map<String, Integer> memory) {
+		if(freeWill!=null)
+			this.freeWill = freeWill;
+		else
+			this.freeWill.add(0);
+		if(memory!=null)
+			this.memory = memory;
+		else
+			this.memory.put("0", 0);
+		
 	}
 
 	public Map<String, Integer> getMemory() {
@@ -54,5 +54,12 @@ public class FreeWill extends BFreeWill  implements Serializable{
 		this.memory = memory;
 	}
 
- 
+	public List<Integer> getFreeWill() {
+		return freeWill;
+	}
+
+	public void setFreeWill(List<Integer> freeWill) {
+		this.freeWill = freeWill;
+	} 
+
 }

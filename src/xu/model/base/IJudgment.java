@@ -14,4 +14,7 @@ import xu.model.World;
 public interface IJudgment  extends INode{
 
 	public  boolean run(World w,Creature c,MainPar mainPar, FreeWill freePar);
+
+	public MainPar getExample( );
+
 }

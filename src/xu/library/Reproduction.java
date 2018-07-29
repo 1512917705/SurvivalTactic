@@ -4,8 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import xu.library.Behavior.multiplication;
 import xu.model.BehaviorTree;
 import xu.model.Creature;
 import xu.model.FreeWill;
@@ -16,6 +19,7 @@ import xu.model.TreeNode;
 import xu.model.World;
 import xu.model.base.IJudgment;
 import xu.model.base.BMainPar;
+import xu.model.base.IBehavior;
 import xu.model.base.INode;
 
 /**
@@ -29,19 +33,25 @@ public final class Reproduction {
 	// 增和删的概率必须一致，它们必须在一个地方进行判定
 
 	private static int FreeWillVar = 1;// 自由意志参数变异概率（小）
+	private static int GenomeVar = 1;// 基因组变异概率
 	private static int NodeVar = 1;// 节点变异概率（大）
+	private static int NodeDetailVar = 1;// 节点细节概率（最大）
 	// 基因组
 	private static int addGenomeVar = 1;
 	private static int delGenomeVar = 1;
-	private static int editGenomeVar = 1;
+	// private static int editGenomeVar = 1;
 	// 筛选到某个节点，如果增，则在其前增加（避免行为后加行为），删则删它，改则改它
 	private static int addNodeVar = 1;
 	private static int delNodeVar = 1;
 	private static int editNodeVar = 1;
+	// 自由意志参数节点变异
+	private static int addFreeWillParVar = 1;
+	private static int delFreeWillParVar = 1;
+	private static int editFreeWillParVar = 3;
 	// 自由意志判定节点变异
 	private static int addFreeWillVar = 1;
 	private static int delFreeWillVar = 1;
-	private static int editFreeWillVar = 1;// 再进行一次第几个节点进行变异的判定
+	private static int editFreeWillVar = 1;
 	// 节点内变异
 	// 0~3则，4~6则是
 	private static int editValVar = 1;// 值变异
@@ -75,28 +85,67 @@ public final class Reproduction {
 	}
 
 	/**
+	 * 根据节点获取对应模板参数
+	 * 
+	 * @return
+	 */
+	public static MainPar getExample(MainPar par) {
+		try {
+			// save the object to a byte array
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(bout);
+			out.writeObject(par);
+			out.close();
+
+			// read a clone of the object from byte array
+			ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
+			ObjectInputStream in = new ObjectInputStream(bin);
+			Object ret = in.readObject();
+			in.close();
+
+			return (MainPar) ret;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
 	 * 开始变异 从基因组开始变异
 	 * 
 	 * @param c
 	 * @return
 	 */
 	public static void starVar(Creature c) {
-		int fOrN = random.nextInt(FreeWillVar + NodeVar);
+		int fOrN = random.nextInt(FreeWillVar + GenomeVar + NodeVar + NodeDetailVar);
+
 
 		if (fOrN < FreeWillVar) {
-			freeWillVar(c.getTree().getFreeWill());// 进行参数变异
+			freeWillParVar(c.getTree().getFreeWill());// 自由意志参数变异
 			return;
 		}
 
+		//基因组变异增删改，第一次测试通过
 		int MutantGenomeLocation = random.nextInt(c.getTree().getGenomeList().size());// 第几个基因要变异
 		Genome g = c.getTree().getGenomeList().get(MutantGenomeLocation);// 获取到该变异的基因
-		if (GenomeVar(c, g, MutantGenomeLocation))
-			return;// 如果是新增和删除，则结束变异
+		if (fOrN >= FreeWillVar & fOrN < (FreeWillVar + GenomeVar)) {
+			GenomeVar(c, g, MutantGenomeLocation);
+			return;
+		}
 
+
+		//节点变异增删改，第一次测试通过
 		int MutantNodeLocation = random.nextInt(g.getTreeNodeList().size());// 第几个节点变异
 		TreeNode tn = g.getTreeNodeList().get(MutantNodeLocation);// 获取该变异的节点
-		NoidVar(c, g, tn, MutantNodeLocation);// 进行节点变异
+		if (fOrN >= (FreeWillVar + GenomeVar) & fOrN < (FreeWillVar + GenomeVar + NodeVar)) {
+			NoidVar(c, g, tn, MutantNodeLocation);// 进行节点大变异
+			return;
+		}
+			
+		// 应该还有节点细变异，不改变节点，只改变参数，比如说节点内参数变异，节点的自由意志行为变异，等等
+		if (fOrN >= (FreeWillVar + GenomeVar + NodeVar)) {
 
+			return;
+		}
 	}
 
 	/**
@@ -124,46 +173,27 @@ public final class Reproduction {
 	 * 
 	 * @param tn
 	 */
-	public static boolean GenomeVar(Creature c, Genome g, int MutantGenomeLocation) {
-		int type = random.nextInt(editGenomeVar + delGenomeVar + addGenomeVar);// 变异类型
-		if (type < editGenomeVar) {
-			// 修改基因组
-
-			return false;
+	public static void GenomeVar(Creature c, Genome g, int MutantGenomeLocation) {
+		int type = random.nextInt(delGenomeVar + addGenomeVar);// 变异类型
+		if (type >= addGenomeVar) {
+			// 删除基因组
+			c.getTree().getGenomeList().remove(g);
+			return;
 		} else {
-			if (type > (editGenomeVar + addGenomeVar)) {
-				// 删除基因组
-				c.getTree().getGenomeList().remove(g);
-				return true;
-			} else {
-				// 新增基因组
-				// c.getTree().getGenomeList().add(MutantGenomeLocation,
-				// element);
-				return true;
-			}
+			// 新增基因组
+			IBehavior node = Behavior.getRandomNode();
+			TreeNode treeNode1 = new TreeNode(node, node.getExample(), null);
+			List<TreeNode> tt1 = new ArrayList<TreeNode>();
+			tt1.add(treeNode1);
+			Genome element = new Genome(tt1);
+			c.getTree().getGenomeList().add(MutantGenomeLocation, element);
+			return;
 		}
+
 	}
 
 	/**
-	 * 参数变异
-	 * 
-	 * @param tn
-	 */
-	public static void freeWillVar(FreeWill fw) {
-		int type = random.nextInt(editFreeWillVar + delFreeWillVar + addFreeWillVar);// 变异类型
-		if (type < editFreeWillVar) {
-			// 修改参数
-		} else {
-			if (type > (editFreeWillVar + addFreeWillVar)) {
-				// 删除参数
-			} else {
-				// 新增参数
-			}
-		}
-	}
-
-	/**
-	 * 节点变异
+	 * 节点大变异
 	 * 
 	 * @param tn
 	 */
@@ -171,14 +201,34 @@ public final class Reproduction {
 		int type = random.nextInt(editNodeVar + delNodeVar + addNodeVar);// 节点变异类型
 		if (type < editNodeVar) {
 			// 修改节点
+			IJudgment ij = Judgment.getRandomNode();
+			TreeNode t = new TreeNode(Judgment.getRandomNode(), ij.getExample(), null);
+			g.getTreeNodeList().set(MutantNodeLocation, t);
 		} else {
-			if (type > (editNodeVar + addNodeVar)) {
+			if (type >= (editNodeVar + addNodeVar)) {
 				// 删除节点
 				g.getTreeNodeList().remove(tn);
 			} else {
 				// 新增判定节点
-				// g.getTreeNodeList().add(MutantNodeLocation, element);
+				IJudgment ij = Judgment.getRandomNode();
+				TreeNode t = new TreeNode(Judgment.getRandomNode(), ij.getExample(), null);
+				g.getTreeNodeList().add(MutantNodeLocation, t);
 			}
+		}
+	}
+
+	/**
+	 * 节点细节变异
+	 * 
+	 * @param tn
+	 */
+	public static void NodeDetailVar(Creature c, Genome g, TreeNode tn, int MutantNodeLocation) {
+		int type = random.nextInt(editValVar + freewillValVar);// 节点变异类型
+
+		if (type >= editValVar) {
+			// 修改参数
+		} else {
+			// 自由意志行为
 		}
 	}
 
@@ -203,16 +253,51 @@ public final class Reproduction {
 	}
 
 	/**
+	 * 自由意志参数变异
+	 * 
+	 * @param tn
+	 */
+	public static void freeWillParVar(FreeWill fw) {
+		int type = random.nextInt(addFreeWillParVar + editFreeWillParVar + delFreeWillParVar);// 变异类型
+		int num = random.nextInt(fw.getFreeWill().size());
+		if (type < addFreeWillParVar | num < 3) {
+			fw.getFreeWill().add(0);
+			// fw.getFreeWill().add(random.nextInt());
+			// 新增参数
+		} else {
+			if (type >= (editFreeWillParVar + addFreeWillParVar)) {
+				// 删除参数
+				fw.getFreeWill().remove(num);
+			} else {
+				// 修改参数
+				editfreeWillParVar(fw, num);
+
+			}
+		}
+	}
+
+	/**
 	 * 自由意志参数值变异 目前自由意志参数数量定死，未来可能会有增删功能
 	 * 
 	 * @param freeWill
 	 * @param i
 	 */
-	public static void freeWillVar(FreeWill freeWill, int i) {
+	public static void editfreeWillParVar(FreeWill freeWill, int i) {
 
-		int[] par = freeWill.getFreeWill();
-		par[i] = par[i] + random.nextInt(par[i] + 1) - random.nextInt(par[i] - 1);
-
+		List<Integer> par = freeWill.getFreeWill();
+/*还有点问题
+ * 目前来说这个公式勉强能用就行，毕竟它“波动范围稳定”“可以变大”“可以变小”
+ * 数据的初始值和最终稳定区间完全无关
+ */
+		par.set(i ,(int) (par.get(i) + Math.random() * (par.get(i) + 1) - Math.random() * (par.get(i) - 1)));
+		/*
+		if (par.get(i) >= -1 && par.get(i) <= 1)
+			par.set(i, par.get(i) + random.nextInt(2));
+		if (par.get(i) > 1)
+			par.set(i, par.get(i) + random.nextInt(par.get(i) + 1) - random.nextInt(par.get(i) - 1));
+		if (par.get(i) < -1)
+			par.set(i, par.get(i) + random.nextInt(-par.get(i) + 1) - random.nextInt(-par.get(i) - 1));
+*/
 	}
 
 	/**
@@ -343,8 +428,8 @@ public final class Reproduction {
 				w.getCreList().add(son);
 				son.setX(x);
 				son.setY(y);
-				son.setLife(son.getLifeMax()*0.5);
-				son.setHungerLifeMax(son.getHungerLifeMax()*0.5);
+				son.setLife(son.getLifeMax() * 0.5);
+				son.setHungerLifeMax(son.getHungerLifeMax() * 0.5);
 				return;
 			}
 		}

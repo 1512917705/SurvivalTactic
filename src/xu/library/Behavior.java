@@ -41,6 +41,15 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	}
 
 	/**
+	 * 获取任意行为节点
+	 * @return
+	 */
+	public static IBehavior getRandomNode(){
+		return BEHAVIOR.get(
+				random.nextInt(BEHAVIOR.size()));
+	}
+
+	/**
 	 * 测试行为节点
 	 * 
 	 * @author 徐川江
@@ -52,6 +61,11 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 			return false;
+		}
+
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
 		}
 	}
 
@@ -72,6 +86,11 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			Skill.move(w, c, move);
 			return false;
 		}
+
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
+		}
 	}
 
 	/**
@@ -90,6 +109,11 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			Skill.move(w, c, move);
 			return false;
 		}
+
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
+		}
 	}
 
 	/**
@@ -107,10 +131,15 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 			return false;
 		}
+
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
+		}
 	}
 
 	/**
-	 * 繁殖行为节点
+	 * 繁殖行为节点(测试阶段)
 	 * 
 	 * @author 徐川江
 	 *
@@ -141,8 +170,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			 */
 			// int NumberOfMutantOrganisms =
 			// Reproduction.NumberOfMutantOrganisms(c);// 后代变异数量
-			int NumberOfMutantOrganisms = 0;// 测试
-			System.out.println("繁殖");
+			int NumberOfMutantOrganisms = 10;// 测试
+			//System.out.println("繁殖");
 			for (int x = 0, n = 0; x < c.getBreednum(); x++) {
 				// 关于繁殖时候的消耗，和孩子数量，是个问题
 				if ((c.getHungerLife() - c.getHungerLifeMax() * 0.5) < 0)// 饥饿不够
@@ -159,7 +188,7 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 					// int NumberOfVariantNodes =
 					// Reproduction.NumberOfVariantNodes(son);// 有几个次变异
 
-					// Reproduction.starVar(son);//开始变异
+					Reproduction.starVar(son);//开始变异
 
 					n++;
 				}
@@ -171,5 +200,9 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			return false;
 		}
 
+		@Override
+		public MainPar getExample() {
+			return Reproduction.getExample(example);
+		}
 	}
 }

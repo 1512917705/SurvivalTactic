@@ -115,7 +115,7 @@ public class Creature implements Cloneable, Serializable {
 		this.tree = t;
 		this.variation = variation;
 		breeding = 90 * body;// 90回合繁殖后代,可以强制繁殖，但是代价加大
-		hunger = 0.1 * body + tree.getMaxNum() / 10000;// 0节点时候，100回合饿死
+		hunger = 0.1 * body + tree.getGenomeList().size() / 10000;// 0节点时候，100回合饿死
 		vision = 12 - body / 2;
 
 		old = 1;
