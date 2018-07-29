@@ -118,7 +118,7 @@ public final class Reproduction {
 	public static void starVar(Creature c) {
 		int fOrN = random.nextInt(FreeWillVar + GenomeVar + NodeVar + NodeDetailVar);
 
-
+		//测试通过.....应该
 		if (fOrN < FreeWillVar) {
 			freeWillParVar(c.getTree().getFreeWill());// 自由意志参数变异
 			return;
