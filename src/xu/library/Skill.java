@@ -94,8 +94,8 @@ public final class Skill implements IJudgmentLibrary {
 			System.out.println("体型" + sw.getBody());
 			System.out.println("攻击力" + sw.getAttack());
 			System.out.println("基因组" + sw.getTree().getGenomeList().size());
-			System.out.println("节点" + CreatureRun.NodeNum(sw));
-			System.out.println("自由意志"+CreatureRun.FreewillNum(sw));
+			System.out.println( CreatureRun.NodeNum(sw));
+			//System.out.println("自由意志参数"+CreatureRun.FreewillNum(sw));
 		}
 
 		return 0;
@@ -173,4 +173,17 @@ public final class Skill implements IJudgmentLibrary {
 		return 1;
 	}
 
+	
+	/**
+	 * 增加一个只能给其他人使用的回血技能，消耗攻击力*2的饥饿或者血，为其他人回复攻击力/2的血量
+	 */
+	public static int zd(World w, Creature c, int x) {
+		if(x<1)
+			System.out.println("数字太小");
+		else
+			Run.setReminderAutoRound(x);
+		
+		return 1;
+		
+	}
 }

@@ -18,8 +18,10 @@ import xu.view.View;
  */
 public final class Run {
 
-	private static String showInfo = " ";//上回合所有信息，在回合开始时候展示
-	private static int gameType = 1;//1正常模式 2自动运行模式 
+	private static String showInfo = " ";// 上回合所有信息，在回合开始时候展示
+	private static int gameType = 1;// 1正常模式 2自动运行模式
+	private static int ReminderAutoRound = 0;
+
 	/**
 	 * 字符串是否是整数
 	 * 
@@ -46,14 +48,18 @@ public final class Run {
 		 * 这时候，一回合就过去了，开始下一回合，所有生物行动点数+100
 		 */
 		// 回合开始
-		WorldRun.setAllCanRunCreature(w);// 开始准备可运行的生物,给这些生物进行处理
+		WorldRun.setAllCanRunCreature(w,ReminderAutoRound);// 开始准备可运行的生物,给这些生物进行处理
+		System.out.println(w.getRound());
+		w.setRound(w.getRound() + 1);
+		if (ReminderAutoRound > 0)
+			ReminderAutoRound--;
+
 		for (Creature c : w.getCreList()) {
 			c.setSpeedPower(c.getSpeedPower() + 100);// 每个生物赋予100行动点数
-			c.setOld(c.getOld() + 1);// 回合数+1
 
-			if ((c.getHungerLife() - c.getHunger()) < 0)
-				c.setLife(c.getLife() - c.getHunger());// 饿到掉血
-			else {
+			if ((c.getHungerLife() - c.getHunger()) < 0) {
+				c.setLife(c.getLife() - c.getHunger() * 10);// 饿到掉血
+			} else {
 				c.setHungerLife(c.getHungerLife() - c.getHunger());// 变饥饿
 				c.setLife(c.getLife() + 1);// 非饥饿状态，每回合回1血
 			}
@@ -69,6 +75,11 @@ public final class Run {
 			if (c.getSpeedPower() >= c.getSpeed()) {
 				c.setSpeedPower(c.getSpeedPower() - c.getSpeed());// 扣行动点数
 
+				if (c.getLife() < 0) {
+					CreatureRun.injure(c, c, w, 100);
+					continue;
+				}
+				
 				if (c == w.getPlayer()) {// 玩家回合
 					playRoundRun(w, c, sc);
 					if (!c.isLive())
@@ -95,12 +106,17 @@ public final class Run {
 	 */
 	public static int playRoundRun(World w, Creature c, Scanner sc) {
 
+		if (ReminderAutoRound > 0) {
+			w.getPlayer().setLife(1000);
+			return 0;
+		}
+
 		View.show(w);// 画出地图
-		showInfo();//展示上回合所有信息
-		delShowInfo();//清理信息
+		showInfo();// 展示上回合所有信息
+		delShowInfo();// 清理信息
 		String s;// 输入
 		int round = 0;
-		//System.out.println(c.getOld());
+		// System.out.println(c.getOld());
 		do {// 一些技能不消耗回合
 			System.out.println("请输入操作:");
 			s = sc.nextLine();
@@ -117,6 +133,11 @@ public final class Run {
 					int y = sc.nextInt();// 输入
 					round = Skill.yc(w, c, x, y);
 				}
+				if (s.equals("zd")) {
+					System.out.println("请输入回合");
+					int x = sc.nextInt();// 输入
+					round = Skill.zd(w, c, x);
+				}
 
 				// 不消耗回合的技能
 				if (s.equals("zc")) {
@@ -131,24 +152,33 @@ public final class Run {
 
 		return 0;
 	}
-	
+
 	/**
 	 * 展示上回合的所有信息
 	 */
-	public static void showInfo(){
+	public static void showInfo() {
 		System.out.println(showInfo);
 	}
+
 	public static String getShowInfo() {
 		return showInfo;
 	}
 
 	public static void addShowInfo(String show) {
-		if(gameType==1)//正常模式才可以显示
+		if (ReminderAutoRound == 0)// 正常模式才可以显示
 			showInfo = showInfo + " \n " + show;
 	}
 
-	public static void delShowInfo( ) {
+	public static void delShowInfo() {
 		showInfo = " ";
+	}
+
+	public static int getReminderAutoRound() {
+		return ReminderAutoRound;
+	}
+
+	public static void setReminderAutoRound(int reminderAutoRound) {
+		ReminderAutoRound = reminderAutoRound;
 	}
 
 }

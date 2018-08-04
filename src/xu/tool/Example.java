@@ -7,9 +7,11 @@ import xu.library.Behavior.Move;
 import xu.library.Behavior.multiplication;
 import xu.library.Behavior.randomMove;
 import xu.library.Judgment.lifeBai;
+import xu.library.Reproduction;
 import xu.model.BehaviorTree;
 import xu.model.Creature;
 import xu.model.FreeWill;
+import xu.model.FreeWillBehavior;
 import xu.model.Genome;
 import xu.model.MainPar;
 import xu.model.TreeNode;
@@ -43,9 +45,12 @@ public class Example {
 		MainPar mp1 = new MainPar(new int[] { 80 }, new int[] { 1 }, new int[] { 100 }, new int[] { 100 });
 		MainPar mp3 = new MainPar(new int[] { 5 }, new int[] { 5 }, new int[] { 5 }, new int[] { 100 });
 
-		TreeNode treeNode1 = new TreeNode(multiplication.INSTANCE, mp1, null);
-		TreeNode treeNode2 = new TreeNode(randomMove.INSTANCE, null, null);
-		TreeNode treeNode3 = new TreeNode(Move.INSTANCE, mp3, null);
+		FreeWillBehavior fwb1 = new FreeWillBehavior();
+		TreeNode treeNode1 = new TreeNode(multiplication.INSTANCE, Reproduction.getExample(multiplication.example), fwb1);
+		FreeWillBehavior fwb2 = new FreeWillBehavior();
+		TreeNode treeNode2 = new TreeNode(randomMove.INSTANCE, Reproduction.getExample(randomMove.example), fwb2);
+		FreeWillBehavior fwb3 = new FreeWillBehavior();
+		TreeNode treeNode3 = new TreeNode(Move.INSTANCE, mp3, fwb3);
 
 		List<TreeNode> tt1 = new ArrayList<TreeNode>();
 		tt1.add(treeNode1);

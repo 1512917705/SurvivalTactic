@@ -34,7 +34,6 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	 */
 	static List<IBehavior> BEHAVIOR = new ArrayList<IBehavior>();// 这个list包含所有的判定，每次获取新节点，去里面随机捞一个
 	static {
-		BEHAVIOR.add(Test.INSTANCE);// 从单例模式中取节点
 		BEHAVIOR.add(Move.INSTANCE); // 问题是参数还是要自己去根据模板来初始化
 		BEHAVIOR.add(multiplication.INSTANCE);// 繁殖
 		BEHAVIOR.add(randomMove.INSTANCE);// 随意移动
@@ -42,11 +41,11 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 	/**
 	 * 获取任意行为节点
+	 * 
 	 * @return
 	 */
-	public static IBehavior getRandomNode(){
-		return BEHAVIOR.get(
-				random.nextInt(BEHAVIOR.size()));
+	public static IBehavior getRandomNode() {
+		return BEHAVIOR.get(random.nextInt(BEHAVIOR.size()));
 	}
 
 	/**
@@ -57,7 +56,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	 */
 	public enum Test implements IBehavior {// 单例模式放内容
 		INSTANCE;
-		public static MainPar example;
+		public static MainPar example = new MainPar(new int[] { 0 }, new int[] { 0 }, new int[] { 0 },
+				new int[] { 0 });
 
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 			return false;
@@ -65,8 +65,10 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 		@Override
 		public MainPar getExample() {
-			return Reproduction.getExample(example);
+			// TODO Auto-generated method stub
+			return example;
 		}
+
 	}
 
 	/**
@@ -89,8 +91,10 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 		@Override
 		public MainPar getExample() {
-			return Reproduction.getExample(example);
+			// TODO Auto-generated method stub
+			return example;
 		}
+
 	}
 
 	/**
@@ -101,7 +105,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	 */
 	public enum randomMove implements IBehavior {// 单例模式放内容
 		INSTANCE;
-		public static MainPar example;
+		public static MainPar example = new MainPar(new int[] { 0 }, new int[] { 0 }, new int[] { 0 },
+				new int[] { 0 });
 
 		@Override
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
@@ -112,8 +117,10 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 		@Override
 		public MainPar getExample() {
-			return Reproduction.getExample(example);
+			// TODO Auto-generated method stub
+			return example;
 		}
+
 	}
 
 	/**
@@ -124,8 +131,9 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	 */
 	public enum kuangbao implements IBehavior {// 单例模式放内容
 		INSTANCE;
-		public static MainPar example;
-
+		public static MainPar example = new MainPar(new int[] { 0 }, new int[] { 0 }, new int[] { 0 },
+				new int[] { 0 });
+		
 		@Override
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
 
@@ -134,8 +142,10 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 		@Override
 		public MainPar getExample() {
-			return Reproduction.getExample(example);
+			// TODO Auto-generated method stub
+			return example;
 		}
+
 	}
 
 	/**
@@ -146,8 +156,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 	 */
 	public enum multiplication implements IBehavior {
 		INSTANCE;
-		public static MainPar example = new MainPar(new int[] { 1 }, new int[] { 9 }, new int[] { 1 },
-				new int[] { 100 });
+		public static MainPar example = new MainPar(new int[] { 0 }, new int[] { 0 }, new int[] { 0 },
+				new int[] { 0 });
 
 		@Override
 		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
@@ -171,24 +181,25 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 			// int NumberOfMutantOrganisms =
 			// Reproduction.NumberOfMutantOrganisms(c);// 后代变异数量
 			int NumberOfMutantOrganisms = 10;// 测试
-			//System.out.println("繁殖");
+			double mul = 0.4;
+			// System.out.println("繁殖");
 			for (int x = 0, n = 0; x < c.getBreednum(); x++) {
 				// 关于繁殖时候的消耗，和孩子数量，是个问题
-				if ((c.getHungerLife() - c.getHungerLifeMax() * 0.5) < 0)// 饥饿不够
+				if ((c.getHungerLife() - c.getHungerLifeMax() * mul) < 0)// 饥饿不够
 					return false;
-				if ((c.getLife() - c.getLifeMax() * 0.5) < 0)// 生命不够
+				if ((c.getLife() - c.getLifeMax() * mul) < 0)// 生命不够
 					return false;
-				c.setLife(c.getLife() - c.getLifeMax() * 0.5);
-				c.setHungerLifeMax(c.getHungerLife() - c.getHungerLifeMax() * 0.5);
+				c.setLife(c.getLife() - c.getLifeMax() * mul);
+				c.setHungerLifeMax(c.getHungerLife() - c.getHungerLifeMax() * mul);
 
 				BehaviorTree bt = Reproduction.clone(c.getTree());
-				//bt.getGenomeList().clear();
+				// bt.getGenomeList().clear();
 				Creature son = new Creature(c.getBody(), c.getVariation(), c.getX(), c.getY(), bt);
 				if (n < NumberOfMutantOrganisms) {// 开始变异
 					// int NumberOfVariantNodes =
 					// Reproduction.NumberOfVariantNodes(son);// 有几个次变异
 
-					Reproduction.starVar(son);//开始变异
+					Reproduction.starVar(son);// 开始变异
 
 					n++;
 				}
@@ -202,7 +213,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 
 		@Override
 		public MainPar getExample() {
-			return Reproduction.getExample(example);
+			// TODO Auto-generated method stub
+			return example;
 		}
 	}
 }

@@ -35,7 +35,7 @@ public final class CreatureRun {
 	public static void injure(Creature atkCre, Creature inj, World w, int atk) {
 
 		double l = inj.getLife() - atk;
-		System.out.println(l);
+		//System.out.println(l);
 		Run.addShowInfo("Z被攻击，损失" + atk + "点生命值");
 		if (l >= 0) {
 			inj.setLife(l);
@@ -44,21 +44,23 @@ public final class CreatureRun {
 			atkCre.setHungerLife(inj.getHungerLife());
 
 			// 改成，死亡敌人半径两码所有生物回复饥饿
+			int huifu = 1;
+			int huifuRound = 2*huifu+1;
 			int x = inj.getX();
 			int y = inj.getY();
-			for (int i = 1; i < 4; i++)//
+			for (int i = 1; i < huifuRound; i++)//
 			{
-				for (int j = 1; j < 4; j++)// 生物
+				for (int j = 1; j < huifuRound; j++)// 生物
 				{
-					System.out.println(j + x - 4);
-					System.out.println(-i + y + 4);
+					//System.out.println(j + x - 4);
+					//System.out.println(-i + y + 4);
 					Creature[][] sw = w.getCreatureMap();
-					if ((j + x - 4) < 0 || (-i + y + 4) < 0) {
+					if ((j + x - huifuRound) < 0 || (-i + y + huifuRound) < 0||(j + x - huifuRound)>w.getMax_x()||(-i + y + huifuRound)>w.getMax_y()) {
 						continue;
 					}
-					if (sw[j + x - 4][-i + y + 4] != null) {
-						sw[j + x - 4][-i + y + 4]
-								.setHungerLife(sw[j + x - 4][-i + y + 4].getHungerLife() + inj.getHungerLife());
+					if (sw[j + x - huifuRound][-i + y + huifuRound] != null) {
+						sw[j + x - huifuRound][-i + y + huifuRound]
+								.setHungerLife(sw[j + x - huifuRound][-i + y + huifuRound].getHungerLife() + inj.getHungerLife());
 					}
 				}
 			}
@@ -92,7 +94,7 @@ public final class CreatureRun {
 
 	/**
 	 * 基因组运行
-	 * 
+	 * 目前去掉自由意志
 	 * @param w
 	 * @param c
 	 * @param freePar
@@ -108,15 +110,15 @@ public final class CreatureRun {
 			// System.out.println(n1.run(w, c, n.getMainPar(), freePar));
 			if (n1.run(w, c, n.getMainPar(), freePar))// 本次节点执行的结果
 			{
-				if (n.getFreeWillBehavior() != null)
-					runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
+				//if (n.getFreeWillBehavior() != null)
+					//runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
 			} else {
 				// System.out.println(n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"));
 				if (n1.getClass().getInterfaces()[0].getName().equals("xu.model.base.IBehavior"))// 判定该节点是什么类型节点
 				{
 					// System.out.println(3);
-					if (n.getFreeWillBehavior() != null)
-						runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
+					//if (n.getFreeWillBehavior() != null)
+						//runFreeWillBehavior(freePar, n.getFreeWillBehavior());// 执行自由意志行为
 					return 1;// 执行行为节点
 				}
 				return 0;// 判定节点遇见false
@@ -139,8 +141,15 @@ public final class CreatureRun {
 		int[] b = fwb.getB();
 		int[] c = fwb.getC();
 		int[] d = fwb.getD();
-
-		for (int z = 0; z < a.length; z++) {
+		int z;
+		for (z = 0; z < a.length; z++) {
+			if(a[z]>free.size())
+				a[z]=a[z]%free.size();
+			if(b[z]>free.size())
+				b[z]=b[z]%free.size();
+			if(d[z]>free.size())
+				d[z]=d[z]%free.size();
+			free.get(b[z]);
 			switch (c[z]) {
 			case 0:
 				free.set(a[z], free.get(b[z]) + free.get(d[z]));
@@ -156,6 +165,7 @@ public final class CreatureRun {
 				break;
 			}
 		}
+		
 	}
 
 	/**
@@ -168,9 +178,13 @@ public final class CreatureRun {
 		int num = 0;
 		for (Genome g : c.getTree().getGenomeList()) {
 
+			System.out.println("基因组" + g.getTreeNodeList().size());
 			for (TreeNode tn : g.getTreeNodeList()) {
 				num++;
-				System.out.print(tn.getValue().getClass().getName() + "    ");
+				System.out.print("节点名称" + tn.getValue().getClass().getName() + "    ");
+				if(tn.getMainPar()!=null)
+				System.out.print("节点参数" + tn.getMainPar().getMainpar().toString() + "    ");
+				//System.out.print("自由意志行为" + tn.getFreeWillBehavior().getA().toString() + "    ");
 			}
 
 		}

@@ -50,12 +50,12 @@ public class View {
 	
 	/**
 	 * 地图绘制，每回合绘制一次
-	 * @param sj
+	 * @param world
 	 */
-	public static void show(World sj){
-		int x = sj.getPlayer().getX();
-		int y = sj.getPlayer().getY();
-		int v = sj.getPlayer().getVision();
+	public static void show(World world){
+		int x = world.getPlayer().getX();
+		int y = world.getPlayer().getY();
+		int v = world.getPlayer().getVision();
 		
 
 		for(int i=1;i<2*(v+1);i++)//第一行
@@ -116,9 +116,9 @@ public class View {
 			
 			for(int j=1;j<2*v;j++)//生物
 				{
-				Creature[][] c = sj.getCreatureMap();
+				Creature[][] c = world.getCreatureMap();
 				
-				if((j+x-v)<0||(-i+y+v)<0)
+				if((j+x-v)<0||(-i+y+v)<0||(j + x - v)>world.getMax_x()||(-i + y + v)>world.getMax_y())
 				{
 					System.out.print("# ");
 					continue;
@@ -127,7 +127,7 @@ public class View {
 				if( c[j+x-v][-i+y+v] == null )
 					System.out.print(". ");
 				else
-					if( (Creature)c[j+x-v][-i+y+v] == sj.getPlayer() )
+					if( (Creature)c[j+x-v][-i+y+v] == world.getPlayer() )
 						System.out.print("@ ");
 					else
 					System.out.print("Z ");

@@ -34,19 +34,23 @@ public class FreeWill extends BFreeWill implements Serializable {
 	 * @param freeWill
 	 * @param memory
 	 */
-	public FreeWill( List<Integer>  freeWill, Map<String, Integer> memory) {
-		if(freeWill!=null)
-			this.freeWill = freeWill;
-		else
-			this.freeWill.add(0);
-		if(memory!=null)
-			this.memory = memory;
-		else
-			this.memory.put("0", 0);
-		
+	public FreeWill(List<Integer> freeWill, Map<String, Integer> memory) {
+		// if (freeWill != null)
+		this.freeWill = freeWill;
+		// else
+		// this.freeWill.add(0);
+		// if (memory != null)
+		this.memory = memory;
+		// else
+		// this.memory.put("0", 0);
+
 	}
 
 	public Map<String, Integer> getMemory() {
+		if (memory != null)
+			return memory;
+		memory = new HashMap<String, Integer>();
+		memory.put("0", 0);
 		return memory;
 	}
 
@@ -55,11 +59,15 @@ public class FreeWill extends BFreeWill implements Serializable {
 	}
 
 	public List<Integer> getFreeWill() {
+		if (freeWill != null)
+			return freeWill;
+		freeWill = new ArrayList<Integer>();
+		this.freeWill.add(0);
 		return freeWill;
 	}
 
 	public void setFreeWill(List<Integer> freeWill) {
 		this.freeWill = freeWill;
-	} 
+	}
 
 }
