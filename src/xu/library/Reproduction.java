@@ -32,37 +32,37 @@ public final class Reproduction {
 	static Random random = new Random();
 	// 增和删的概率必须一致，它们必须在一个地方进行判定
 
-	private static int parAdd = 1;
-	private static int parLess = 1;
+	private static int parAdd = 10;
+	private static int parLess = 10;
 
-	private static int FreeWillVar = 1;// 自由意志参数变异概率（小）
-	private static int GenomeVar = 1;// 基因组变异概率
-	private static int NodeVar = 1;// 节点变异概率（大）
-	private static int NodeDetailVar = 1;// 节点细节概率（最大）
+	private static int FreeWillVar = 10;// 自由意志参数变异概率（小）
+	private static int GenomeVar = 10;// 基因组变异概率
+	private static int NodeVar = 10;// 节点变异概率（大）
+	private static int NodeDetailVar = 10;// 节点细节概率（最大）
 	// 基因组
-	private static int addGenomeVar = 1;
-	private static int delGenomeVar = 1;
-	// private static int editGenomeVar = 1;
+	private static int addGenomeVar = 10;
+	private static int delGenomeVar = 10;
+	// private static int editGenomeVar = 10;
 	// 筛选到某个节点，如果增，则在其前增加（避免行为后加行为），删则删它，改则改它
-	private static int addNodeVar = 1;
-	private static int delNodeVar = 1;
-	private static int editNodeVar = 1;
+	private static int addNodeVar = 10;
+	private static int delNodeVar = 10;
+	private static int editNodeVar = 10;
 	// 自由意志参数节点变异
-	private static int addFreeWillParVar = 1;
-	private static int delFreeWillParVar = 1;
-	private static int editFreeWillParVar = 3;
+	private static int addFreeWillParVar = 10;
+	private static int delFreeWillParVar = 10;
+	private static int editFreeWillParVar = 10;
 	// 自由意志行为变异
-	private static int addFreeWillBhVar = 1;
-	private static int delFreeWillBhVar = 1;
-	private static int editFreeWillBhVar = 1;
+	private static int addFreeWillBhVar = 10;
+	private static int delFreeWillBhVar = 10;
+	private static int editFreeWillBhVar = 10;
 	// 自由意志节点变异
-	private static int addFreeWillVar = 1;
-	private static int delFreeWillVar = 1;
-	private static int editFreeWillVar = 1;
+	private static int addFreeWillVar = 10;
+	private static int delFreeWillVar = 10;
+	private static int editFreeWillVar = 10;
 	// 节点内变异
 	// 0~3则，4~6则是
-	private static int editValVar = 1;// 值变异
-	private static int freewillValVar = 1;// 自由意志行为变异
+	private static int editValVar = 10;// 值变异
+	private static int freewillValVar = 10;// 自由意志行为变异
 
 	/**
 	 * 深度克隆

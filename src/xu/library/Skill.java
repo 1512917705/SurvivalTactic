@@ -64,7 +64,7 @@ public final class Skill implements IJudgmentLibrary {
 			return 1;
 		}
 
-		if (x < 0 || y < 0) {
+		if (x < 0 || y < 0||x>w.getMax_x()||y>w.getMax_y()) {
 			return 1;
 		}
 

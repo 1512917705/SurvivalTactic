@@ -25,7 +25,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
 		//去Example里拿模板世界，模板生物
-		World w = Example.getWorld(5 , 90,90);
+		World w = Example.getWorld(5 , 10,90);
 		
 		for(;;){
 			if (Run.roundRun(w, sc)==1)//运行一回合

@@ -37,6 +37,8 @@ public final class Behavior implements IBehaviorLibrary, Serializable {
 		BEHAVIOR.add(Move.INSTANCE); // 问题是参数还是要自己去根据模板来初始化
 		BEHAVIOR.add(multiplication.INSTANCE);// 繁殖
 		BEHAVIOR.add(randomMove.INSTANCE);// 随意移动
+		BEHAVIOR.add(randomMove.INSTANCE);// 随意移动
+		BEHAVIOR.add(randomMove.INSTANCE);// 随意移动
 	}
 
 	/**
