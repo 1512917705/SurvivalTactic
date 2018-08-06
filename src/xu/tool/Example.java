@@ -28,7 +28,9 @@ public class Example {
 
 	/**
 	 * 获取世界
-	 * 
+	 * @param body 玩家体型
+	 * @param x 玩家X坐标
+	 * @param y 玩家Y坐标
 	 * @return
 	 */
 	public static World getWorld(int body ,int x ,int y) {

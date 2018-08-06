@@ -32,7 +32,7 @@ public final class Judgment implements IJudgmentLibrary, Serializable {
 	static List<IJudgment> JUDGMENT = new ArrayList<IJudgment>();// 这个list包含所有的判定，每次获取新节点，去里面随机捞一个
 	static {
 		//JUDGMENT.add(FreeWillJud.INSTANCE); // 从单例模式中取节点
-		//JUDGMENT.add(FreeWillJud.INSTANCE);
+		JUDGMENT.add(diren.INSTANCE);
 		JUDGMENT.add(lifeBai.INSTANCE);
 	}
 	/*
@@ -185,7 +185,48 @@ public final class Judgment implements IJudgmentLibrary, Serializable {
 			// TODO Auto-generated method stub
 			return example;
 		}
-
 	}
 
+
+	/**
+	 * 视野内血量最高的敌人，存入记忆healthMax中
+	 * 
+	 * @author 徐川江
+	 *
+	 */
+	public enum healthMax implements IJudgment {
+		INSTANCE;
+		public static MainPar example = new MainPar(new int[] { 0 }, new int[] { 0 }, new int[] { 0 },
+				new int[] { 0 });
+
+		public boolean run(World w, Creature c, MainPar mainPar, FreeWill freePar) {
+			int x = w.getPlayer().getX();
+			int y = w.getPlayer().getY();
+			int v = w.getPlayer().getVision();
+
+			for (int i = 1; i < 2 * v; i++)//
+			{
+				for (int j = 1; j < 2 * v; j++)// 生物
+				{
+					Creature[][] sw = w.getCreatureMap();
+
+					if ((j + x - v) < 0 || (-i + y + v) < 0) {
+						continue;
+					}
+
+					if (sw[j + x - v][-i + y + v] != null && sw[j + x - v][-i + y + v] != c) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public MainPar getExample() {
+			// TODO Auto-generated method stub
+			return example;
+		}
+	}
+		
 }

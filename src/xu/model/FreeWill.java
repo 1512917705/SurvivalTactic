@@ -22,12 +22,15 @@ public class FreeWill extends BFreeWill implements Serializable {
 	/**
 	 * 自由意志参数
 	 */
-	private List<Integer> freeWill = new ArrayList<Integer>();// 主参数
+	private List<Integer> freeWill = new ArrayList<Integer>();
 	/**
-	 * 记忆参数 所有判定和行为节点所存放的数据都在这里
+	 * 记忆参数 所有判定和行为节点所内定使用的数据都在这里
 	 */
 	private Map<String, Integer> memory = new HashMap<String, Integer>();
-
+	
+	//根据memory中第n个参数的值，取得xMemory.get(memory.get(n))的值，这就是x坐标
+	private List<Integer> xMemory = new ArrayList<Integer>();// X坐标记忆
+	private List<Integer> YMemory = new ArrayList<Integer>();// Y坐标记忆
 	/**
 	 * 自由意志类构造函数
 	 * 
@@ -35,15 +38,14 @@ public class FreeWill extends BFreeWill implements Serializable {
 	 * @param memory
 	 */
 	public FreeWill(List<Integer> freeWill, Map<String, Integer> memory) {
-		// if (freeWill != null)
 		this.freeWill = freeWill;
-		// else
-		// this.freeWill.add(0);
-		// if (memory != null)
 		this.memory = memory;
-		// else
-		// this.memory.put("0", 0);
-
+	}
+	public FreeWill(List<Integer> freeWill, Map<String, Integer> memory,List<Integer> xMemory,List<Integer> YMemory) {
+		this.freeWill = freeWill;
+		this.memory = memory;
+		this.xMemory = xMemory;
+		this.YMemory = YMemory;
 	}
 
 	public Map<String, Integer> getMemory() {
@@ -68,6 +70,18 @@ public class FreeWill extends BFreeWill implements Serializable {
 
 	public void setFreeWill(List<Integer> freeWill) {
 		this.freeWill = freeWill;
+	}
+	public List<Integer> getxMemory() {
+		return xMemory;
+	}
+	public void setxMemory(List<Integer> xMemory) {
+		this.xMemory = xMemory;
+	}
+	public List<Integer> getYMemory() {
+		return YMemory;
+	}
+	public void setYMemory(List<Integer> yMemory) {
+		YMemory = yMemory;
 	}
 
 }
